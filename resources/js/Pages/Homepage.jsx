@@ -1,23 +1,20 @@
-import { Head, Link } from '@inertiajs/react';
-import React from 'react';
+import NewLists from "@/Components/Homepage/NewsList";
+import Paginator from "@/Components/Homepage/Paginator";
+import Navbar from "@/Components/Navbar";
+import { Head, Link } from "@inertiajs/react";
+import React from "react";
 
 export default function Homepage(props) {
     return (
-        <div className='flex justify-center items-center min-h-screen bg-slate-50 '>
+        <div className=" min-h-screen bg-slate-50 dark:bg-neutral-900">
             <Head title={props.title} />
-            <div>
-            {props.news ? props.news.map((data, i) => {
-                <p>{props.description}</p>
-                return (
-                    <div key={i} className='p-4 m-2 bg-white text-black shadow-md border'>
-                        <p className='text-2xl'>{data.title}</p>
-                        <p>{data.description}</p>
-                        <i className='text-sm'>{data.category}</i>
-                        <i className='text-sm'>{data.author}</i>
-                    </div>
-                )
-            }) : <p>Saat ini belum ada berita</p>} 
+            <Navbar />
+            <div className="flex justify-center flex-col lg:flex-row lg:flex-wrap lg:items-stretch items-center gap-4 p-4">
+            <NewLists news={props.news.data} />
+            </div>
+            <div className="flex justify-center items-center">
+                <Paginator meta={props.news.meta}/>
+            </div>
         </div>
-    </div>
-    )
+    );
 }
