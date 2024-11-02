@@ -1,4 +1,9 @@
-const Navbar = () => {
+import Login from "@/Pages/Auth/Login";
+import { Link } from "@inertiajs/react";
+
+
+
+const Navbar = ({ user }) => {
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">
@@ -29,18 +34,31 @@ const Navbar = () => {
                         tabIndex="0"
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
                     >
-                        <li>
-                            <a className="justify-between">
-                                Dashbord
-                                <span className="badge">New</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a>Settings</a>
-                        </li>
-                        <li>
-                            <a>Logout</a>
-                        </li>
+                        {!user ? 
+                            <>
+                                <li>
+                                    <Link href={route('login')} as="button">Login</Link>
+                                </li>
+                                <li>
+                                    <Link href={route('register')} as="button">Register</Link>
+                                </li>
+                            </>
+                            : 
+                            <>
+                                <li>
+                                    <Link className="justify-between" href={route('dashboard')} as="button">
+                                        Dashbord
+                                        <span className="badge">New</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link>Settings</Link>
+                                </li>
+                                <li>
+                                    <Link href={route('logout')} method="post" as="button">Logout</Link>
+                                </li>
+                            </>
+                        }
                     </ul>
                 </div>
             </div>
