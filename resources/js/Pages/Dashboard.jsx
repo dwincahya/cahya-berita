@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
-import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { Link, Head } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 
 export default function Dashboard(props) {
     const [title, setTitle] = useState("");
@@ -22,6 +22,13 @@ export default function Dashboard(props) {
         setCategory("");
     };
 
+    useEffect(() => {
+        if (!props.myNews) {
+            Inertia.get("/news");
+        }
+        return;
+    }, []);
+
     return (
         <AuthenticatedLayout
             auth={props.auth}
@@ -37,7 +44,7 @@ export default function Dashboard(props) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="p-6 bg-white border-b border-gray-200">
-                        {isNotif && 
+                        {isNotif && (
                             <div role="alert" className="alert alert-success">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +61,7 @@ export default function Dashboard(props) {
                                 </svg>
                                 <span>{props.flash.message}</span>
                             </div>
-                        }
+                        )}
                         <input
                             type="text"
                             placeholder="Judul"
@@ -87,6 +94,41 @@ export default function Dashboard(props) {
                             SUBMIT
                         </button>
                     </div>
+                </div>
+                <div className="p-4">
+                    {props.myNews && props.myNews.length > 0 ? (
+                        props.myNews.map((news, i) => {
+                            return (
+                                <div
+                                    key={i}
+                                    className="m-2 card bg-base-100 w-full lg:w-96 shadow-xl dark:bg-white dark:text-black"
+                                >
+                                    <div className="card-body">
+                                        <h2 className="card-title">
+                                            {news.title}
+                                            <div className="badge badge-secondary">
+                                                NEW
+                                            </div>
+                                        </h2>
+                                        <p>{news.description}</p>
+                                        <div className="card-actions justify-end">
+                                            <div className="badge badge-inline">
+                                                {news.category}
+                                            </div>
+                                            <div className="badge badge-outline">
+                                                <Link href={route('edit.news')} method="get" data={{id: news.id}} as="button">edit</Link>
+                                            </div>
+                                            <div className="badge badge-outline">
+                                                delete
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <p>Belum Ada Berita yang Ditambahkan</p>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>
