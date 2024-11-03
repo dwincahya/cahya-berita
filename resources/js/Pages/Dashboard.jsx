@@ -69,7 +69,7 @@ export default function Dashboard(props) {
                             onChange={(title) => setTitle(title.target.value)}
                             value={title}
                         />
-                        <input
+                        <input  
                             type="text"
                             placeholder="Deskripsi"
                             className="input input-bordered bg-white w-full m-2"
