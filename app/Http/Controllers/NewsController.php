@@ -70,7 +70,7 @@ class NewsController extends Controller
      */
     public function update(Request $request)
     {
-        News::where('author', auth()->user()->email)->update([
+        News::where('id', $request->id)->update([
             'title' => $request->title,
             'description' => $request->description,
             'category' => $request->category,
@@ -81,8 +81,10 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(News $news)
+    public function destroy(Request $request)
     {
-        //
+        $news = News::find($request->id);
+        $news->delete();
+        return redirect()->back()->with('message', 'berita berhasil dihapus');
     }
 }
